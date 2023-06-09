@@ -15,11 +15,11 @@ class Event {
 
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
-      id: json['id'],
-      title: json['titulo'],
-      description: json['descricao'],
-      image: json['imagem'],
-      inscriptions: json['inscritos']
+        id: json['id'],
+        title: json['titulo'],
+        description: json['descricao'],
+        image: json['imagem'],
+        inscriptions: json['inscritos']
     );
   }
 }
