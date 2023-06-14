@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -52,6 +51,8 @@ void _startPushnotificationHandler(FirebaseMessaging messaging) async {
           'A mensagem contém uma notificação: ${message.notification!.title}, ${message.notification!.body}');
     }
   });
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgrougHandler);
 }
 
 void _setPushToken(String? token) async {
@@ -96,4 +97,8 @@ class App extends StatelessWidget {
       home: EventsScreen(),
     );
   }
+}
+
+Future<void> _firebaseMessagingBackgrougHandler(RemoteMessage message) async {
+  print('Mensagem recebida em backgroud: ${message.notification!.title}');
 }
