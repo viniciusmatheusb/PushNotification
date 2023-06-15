@@ -4,7 +4,7 @@ import 'package:flutter_notifications_start/models/event.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String baseUrl = 'http://10.63.10.115:8080/api';
+const String baseUrl = 'http://192.168.100.198:8080/api';
 
 Future<List<Event>> getAllEvents() async {
   final response = await http.get(Uri.parse('$baseUrl/events'));
