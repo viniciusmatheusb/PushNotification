@@ -8,6 +8,8 @@ import 'package:flutter_notifications_start/screens/events_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final navigator = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -42,6 +44,7 @@ void _startPushnotificationHandler(FirebaseMessaging messaging) async {
   print('TOKEN: $token');
   _setPushToken(token);
 
+  //Foreground
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Recebi uma mensagem');
     print('Dados da mensagem: ${message.data}');
@@ -52,7 +55,16 @@ void _startPushnotificationHandler(FirebaseMessaging messaging) async {
     }
   });
 
+  //Background
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgrougHandler);
+
+  //Terminated
+  var notificacao = await FirebaseMessaging.instance.getInitialMessage();
+  print('Terminated');
+
+  if (notificacao!.data['message'].length > 0) {
+    showMyDialog(notificacao.data['message']);
+  }
 }
 
 void _setPushToken(String? token) async {
@@ -95,10 +107,32 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Dev meetups',
       home: EventsScreen(),
+      navigatorKey: navigator,
     );
   }
 }
 
 Future<void> _firebaseMessagingBackgrougHandler(RemoteMessage message) async {
   print('Mensagem recebida em backgroud: ${message.notification!.title}');
+}
+
+void showMyDialog(String message) {
+  print('corpo da mensagem.');
+
+  Widget okButton = OutlinedButton(
+    onPressed: () => Navigator.pop(navigator.currentContext!),
+    child: Text('OK!'),
+  );
+  AlertDialog alerta = AlertDialog(
+    title: Text('Promoção'),
+    content: Text(message),
+    actions: [
+      okButton,
+    ],
+  );
+  showDialog(
+      context: navigator.currentContext!,
+      builder: (BuildContext context) {
+        return alerta;
+      });
 }

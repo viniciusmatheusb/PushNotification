@@ -32,7 +32,7 @@ class CardWidget extends StatelessWidget {
                     height: 15,
                   ),
                   Text(
-                    title,
+                    'Eu que escolho o texto',
                     style: TextStyle(
                       fontSize: 26,
                     ),
